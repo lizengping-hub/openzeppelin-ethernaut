@@ -58,6 +58,7 @@ contract TestVault is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        bytes32 pw = vm.load(address(instance), bytes32(uint256(1)));
+        instance.unlock(pw);
     }
 }
