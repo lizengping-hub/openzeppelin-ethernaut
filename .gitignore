@@ -13,3 +13,4 @@ client/src/gamedata/deploy.local.json
 
 # Local Netlify folder
 .netlify
+.idea
