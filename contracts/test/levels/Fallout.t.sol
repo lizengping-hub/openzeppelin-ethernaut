@@ -61,6 +61,6 @@ contract TestFallout is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        instance.Fal1out();
     }
 }
