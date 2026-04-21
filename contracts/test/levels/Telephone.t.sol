@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "../../src/attacks/TelephoneAttack.sol";
 import "forge-std/Test.sol";
-import {Utils} from "test/utils/Utils.sol";
 
-import {Telephone} from "src/levels/Telephone.sol";
-import {TelephoneFactory} from "src/levels/TelephoneFactory.sol";
-import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {Level} from "src/levels/base/Level.sol";
+import {TelephoneFactory} from "src/levels/TelephoneFactory.sol";
+import {Telephone} from "src/levels/Telephone.sol";
+import {Utils} from "test/utils/Utils.sol";
 
 contract TestTelephone is Test, Utils {
     Ethernaut ethernaut;
@@ -58,5 +59,7 @@ contract TestTelephone is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        TelephoneAttack a = new TelephoneAttack();
+        a.attack(instance);
     }
 }
