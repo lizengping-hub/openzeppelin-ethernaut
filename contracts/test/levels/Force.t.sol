@@ -8,6 +8,8 @@ import {Force} from "src/levels/Force.sol";
 import {ForceFactory} from "src/levels/ForceFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {Address} from "openzeppelin-contracts-v5.4.0/utils/Address.sol";
+import {ForceAttack} from "../../src/attacks/ForceAttack.sol";
 
 contract TestForce is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +60,8 @@ contract TestForce is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        ForceAttack a = new ForceAttack{value: 1 wei}();
+//        Address.sendValue(payable(address(a)), 1 wei);
+        a.attack(address(instance));
     }
 }
