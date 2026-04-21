@@ -24,6 +24,12 @@ contract TestMotorbike is Test, Utils {
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
 
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
+
     function setUp() public {
         address payable[] memory users = createUsers(2);
 
@@ -62,9 +68,8 @@ contract TestMotorbike is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
-        assertTrue(submitLevelInstance(ethernaut, instance));
+    function testSolve() public checkSolvedByPlayer{
+
     }
 
     function done() public {

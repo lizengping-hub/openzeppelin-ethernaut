@@ -6,7 +6,6 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {DoubleEntryPoint, Forta} from "src/levels/DoubleEntryPoint.sol";
 import {DoubleEntryPointFactory} from "src/levels/DoubleEntryPointFactory.sol";
-import {DetectionBot} from "src/attacks/DetectionBot.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
@@ -20,6 +19,12 @@ contract TestDoubleEntryPoint is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -52,14 +57,7 @@ contract TestDoubleEntryPoint is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        Forta forta = instance.forta();
-        DetectionBot bot = new DetectionBot(address(forta));
-
-        forta.setDetectionBot(address(bot));
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

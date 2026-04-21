@@ -6,7 +6,6 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {Denial} from "src/levels/Denial.sol";
 import {DenialFactory} from "src/levels/DenialFactory.sol";
-import {DenialAttack} from "src/attacks/DenialAttack.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
@@ -20,6 +19,12 @@ contract TestDenial is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -52,12 +57,7 @@ contract TestDenial is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        DenialAttack denialAttack = new DenialAttack();
-        instance.setWithdrawPartner(address(denialAttack));
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

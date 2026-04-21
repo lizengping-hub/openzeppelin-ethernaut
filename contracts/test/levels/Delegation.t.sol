@@ -20,6 +20,12 @@ contract TestDelegation is Test, Utils {
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
 
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
+
     function setUp() public {
         address payable[] memory users = createUsers(2);
 
@@ -51,12 +57,7 @@ contract TestDelegation is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        (bool success,) = address(instance).call(abi.encodeWithSignature("pwn()"));
-        require(success, "call not successful");
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

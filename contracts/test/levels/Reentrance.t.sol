@@ -5,13 +5,13 @@ import "forge-std/Test.sol";
 import {Utils} from "test/utils/Utils.sol";
 
 import {DummyFactory} from "src/levels/DummyFactory.sol";
-import {ReentranceAttack, Reentrance} from "src/attacks/ReentranceAttack.sol";
+import {ReentranceInterface} from "src/levels/ReentranceInterface.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
 contract TestReentrance is Test, Utils {
     Ethernaut ethernaut;
-    Reentrance instance;
+    ReentranceInterface instance;
 
     address payable owner;
     address payable player;
@@ -19,6 +19,12 @@ contract TestReentrance is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -36,7 +42,7 @@ contract TestReentrance is Test, Utils {
         vm.stopPrank();
 
         vm.startPrank(player);
-        instance = Reentrance(payable(createLevelInstance(ethernaut, Level(address(factory)), 0.001 ether)));
+        instance = ReentranceInterface(payable(createLevelInstance(ethernaut, Level(address(factory)), 0.001 ether)));
         vm.stopPrank();
     }
 
@@ -51,13 +57,7 @@ contract TestReentrance is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        ReentranceAttack attacker = new ReentranceAttack{value: player.balance}(payable(address(instance)));
-        attacker.attack_1_causeOverflow();
-        attacker.attack_2_deplete();
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

@@ -6,7 +6,6 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {BetHouse, Pool, PoolToken} from "src/levels/BetHouse.sol";
 import {BetHouseFactory} from "src/levels/BetHouseFactory.sol";
-import {BetHouseAttack} from "src/attacks/BetHouseAttack.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
@@ -20,6 +19,12 @@ contract TestBetHouse is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -53,12 +58,7 @@ contract TestBetHouse is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player, player);
-        BetHouseAttack attackContract =
-            new BetHouseAttack(address(instance), payable(instance.pool()), Pool(instance.pool()).depositToken());
-        PoolToken(Pool(instance.pool()).depositToken()).transfer(address(attackContract), 5);
-        attackContract.attack{value: 0.001 ether}();
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    function testSolve() public checkSolvedByPlayer{
+
     }
 }

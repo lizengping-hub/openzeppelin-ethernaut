@@ -20,6 +20,12 @@ contract TestFallback is Test, Utils {
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
 
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
+
     function setUp() public {
         address payable[] memory users = createUsers(2);
 
@@ -44,6 +50,7 @@ contract TestFallback is Test, Utils {
                                  TESTS
     //////////////////////////////////////////////////////////////*/
 
+
     /// @notice Check the initial state of the level and environment.
     function testInit() public {
         vm.startPrank(player);
@@ -51,16 +58,8 @@ contract TestFallback is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        instance.contribute{value: 0.0001 ether}();
 
-        (bool sent,) = address(instance).call{value: 1}("");
-        require(sent, "Failed to send Ether to the instance");
-
-        instance.withdraw();
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

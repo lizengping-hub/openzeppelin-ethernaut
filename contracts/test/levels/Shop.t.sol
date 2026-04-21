@@ -6,7 +6,6 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {Shop} from "src/levels/Shop.sol";
 import {ShopFactory} from "src/levels/ShopFactory.sol";
-import {ShopAttack} from "src/attacks/ShopAttack.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
@@ -20,6 +19,12 @@ contract TestShop is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -52,12 +57,6 @@ contract TestShop is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
-
-        ShopAttack attacker = new ShopAttack();
-        attacker.attack(instance);
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    function testSolve() public checkSolvedByPlayer{
     }
 }

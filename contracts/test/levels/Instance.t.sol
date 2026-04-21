@@ -20,6 +20,12 @@ contract TestInstance is Test, Utils {
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
 
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
+
     function setUp() public {
         address payable[] memory users = createUsers(2);
 
@@ -51,13 +57,7 @@ contract TestInstance is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        string memory pw = instance.password();
-        instance.authenticate(pw);
-        assertTrue(instance.getCleared());
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

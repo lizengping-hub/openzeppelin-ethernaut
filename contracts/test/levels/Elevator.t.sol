@@ -6,7 +6,6 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {Elevator} from "src/levels/Elevator.sol";
 import {ElevatorFactory} from "src/levels/ElevatorFactory.sol";
-import {ElevatorAttack} from "src/attacks/ElevatorAttack.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
@@ -20,6 +19,12 @@ contract TestElevator is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -52,12 +57,7 @@ contract TestElevator is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        ElevatorAttack attack = new ElevatorAttack();
-        attack.attack(address(instance));
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

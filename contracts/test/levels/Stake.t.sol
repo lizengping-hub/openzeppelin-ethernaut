@@ -6,7 +6,6 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {Stake} from "src/levels/Stake.sol";
 import {StakeFactory} from "src/levels/StakeFactory.sol";
-import {StakeAttack} from "src/attacks/StakeAttack.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 import {ERC20} from "openzeppelin-contracts-08/token/ERC20/ERC20.sol";
@@ -22,6 +21,12 @@ contract TestStake is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -54,18 +59,6 @@ contract TestStake is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.deal(player, 1 ether);
-        vm.startPrank(player);
-    
-        StakeAttack attacker = new StakeAttack();
-        attacker.attack{value: 0.001 ether + 2}(instance);
-
-        ERC20 dweth = ERC20(instance.WETH());
-        dweth.approve(address(instance), type(uint256).max);
-        instance.StakeWETH(0.001 ether + 1);
-        instance.Unstake(0.001 ether + 1);
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    function testSolve() public checkSolvedByPlayer{
     }
 }

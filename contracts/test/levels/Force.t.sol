@@ -6,7 +6,6 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {Force} from "src/levels/Force.sol";
 import {ForceFactory} from "src/levels/ForceFactory.sol";
-import {ForceAttack} from "src/attacks/ForceAttack.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
@@ -20,6 +19,12 @@ contract TestForce is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -52,12 +57,7 @@ contract TestForce is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player);
+    function testSolve() public checkSolvedByPlayer{
 
-        ForceAttack attacker = new ForceAttack{value: 1}();
-        attacker.attack(payable(address(instance)));
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }

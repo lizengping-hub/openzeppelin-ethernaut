@@ -6,7 +6,6 @@ import {Utils} from "test/utils/Utils.sol";
 
 import {GatekeeperThree} from "src/levels/GatekeeperThree.sol";
 import {GatekeeperThreeFactory} from "src/levels/GatekeeperThreeFactory.sol";
-import {GatekeeperThreeAttack} from "src/attacks/GatekeeperThreeAttack.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
 
@@ -20,6 +19,12 @@ contract TestGatekeeperThree is Test, Utils {
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
     //////////////////////////////////////////////////////////////*/
+
+    modifier checkSolvedByPlayer() {
+        vm.startPrank(player, player);
+        _;
+        assertTrue(submitLevelInstance(ethernaut, address(instance)));
+    }
 
     function setUp() public {
         address payable[] memory users = createUsers(2);
@@ -52,13 +57,7 @@ contract TestGatekeeperThree is Test, Utils {
     }
 
     /// @notice Test the solution for the level.
-    function testSolve() public {
-        vm.startPrank(player, player);
+    function testSolve() public checkSolvedByPlayer{
 
-        GatekeeperThreeAttack attacker =
-            new GatekeeperThreeAttack{value: 120000000000000000}(payable(address(instance)));
-        attacker.attack();
-
-        assertTrue(submitLevelInstance(ethernaut, address(instance)));
     }
 }
