@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "../../src/attacks/KingAttack.sol";
 import "forge-std/Test.sol";
-import {Utils} from "test/utils/Utils.sol";
 
-import {King} from "src/levels/King.sol";
-import {KingFactory} from "src/levels/KingFactory.sol";
-import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {KingFactory} from "src/levels/KingFactory.sol";
+import {King} from "src/levels/King.sol";
+import {Level} from "src/levels/base/Level.sol";
+import {Utils} from "test/utils/Utils.sol";
 
 contract TestKing is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,6 @@ contract TestKing is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        new KingAttack{value:0.001 ether + 1 wei}(address(instance));
     }
 }
