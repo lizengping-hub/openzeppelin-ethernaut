@@ -8,6 +8,7 @@ import {Elevator} from "src/levels/Elevator.sol";
 import {ElevatorFactory} from "src/levels/ElevatorFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {ElevatorAttack} from "../../src/attacks/ElevatorAttack.sol";
 
 contract TestElevator is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,7 @@ contract TestElevator is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        ElevatorAttack a = new ElevatorAttack();
+        a.attack(instance, 1);
     }
 }
