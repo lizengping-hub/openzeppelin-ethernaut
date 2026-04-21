@@ -8,6 +8,7 @@ import {CoinFlip} from "src/levels/CoinFlip.sol";
 import {CoinFlipFactory} from "src/levels/CoinFlipFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {CoinflipAttack} from "../../src/attacks/CoinflipAttack.sol";
 
 contract TestCoinflip is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,11 @@ contract TestCoinflip is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        CoinflipAttack attacker = new CoinflipAttack(instance);
+        for(uint256 i = 0; i < 10;){
+            vm.roll(block.number + 1);
+            attacker.attack();
+            unchecked{i++;}
+        }
     }
 }
