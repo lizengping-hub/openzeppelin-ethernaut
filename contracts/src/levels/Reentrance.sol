@@ -23,6 +23,7 @@ contract Reentrance {
                 _amount;
             }
             balances[msg.sender] -= _amount;
+            // balances[msg.sender] = balances[msg.sender].sub(_amount);
         }
     }
 
