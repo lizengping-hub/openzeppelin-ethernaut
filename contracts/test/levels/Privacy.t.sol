@@ -58,5 +58,8 @@ contract TestPrivacy is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        bytes32 key = vm.load(address(instance),bytes32(uint256(5)));
+        console.logBytes32(key);
+        instance.unlock(bytes16(key));
     }
 }
