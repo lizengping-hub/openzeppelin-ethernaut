@@ -8,6 +8,7 @@ import {GatekeeperOne} from "src/levels/GatekeeperOne.sol";
 import {GatekeeperOneFactory} from "src/levels/GatekeeperOneFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {GatekeeperOneAttack} from "../../src/attacks/GatekeeperOneAttack.sol";
 
 contract TestGatekeeperOne is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,7 @@ contract TestGatekeeperOne is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        GatekeeperOneAttack a = new GatekeeperOneAttack();
+        a.attack(instance);
     }
 }
