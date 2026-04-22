@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "../../src/attacks/GatekeeperTwoAttack.sol";
 import "forge-std/Test.sol";
-import {Utils} from "test/utils/Utils.sol";
 
-import {GatekeeperTwo} from "src/levels/GatekeeperTwo.sol";
-import {GatekeeperTwoFactory} from "src/levels/GatekeeperTwoFactory.sol";
-import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {GatekeeperTwoFactory} from "src/levels/GatekeeperTwoFactory.sol";
+import {GatekeeperTwo} from "src/levels/GatekeeperTwo.sol";
+import {Level} from "src/levels/base/Level.sol";
+import {Utils} from "test/utils/Utils.sol";
 
 contract TestGatekeeperTwo is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,6 @@ contract TestGatekeeperTwo is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        new GatekeeperTwoAttack(instance);
     }
 }
