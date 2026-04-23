@@ -9,6 +9,8 @@ import {MagicNumFactory} from "src/levels/MagicNumFactory.sol";
 import {MagicNumBadSolver} from "../../src/levels/MagicNumBadSolver.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {MagicNumSolver} from "../../src/attacks/MagicNumSolver.sol";
+
 
 contract TestMagicNum is Test, Utils {
     Ethernaut ethernaut;
@@ -61,6 +63,39 @@ contract TestMagicNum is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        /**
+         * solc --strict-assembly src/attacks/MagicNumSolver.yul
+         * you will get 6008600b5f3960085ff3fe602a5f5260205ff3, and then deploy it
+         */
+        bytes memory bytecode = hex"6008600b5f3960085ff3fe602a5f5260205ff3";
+        address magicNumSolver;
+        assembly{
+            magicNumSolver := create(0, add(bytecode,0x20), mload(bytecode))
+        }
+        vm.assertTrue(magicNumSolver != address(0));
+        uint256 size;
+        bytes memory runtimeCode = magicNumSolver.code;
+        assembly {
+            size := extcodesize(magicNumSolver)
+        }
+        console.logUint(size);
+        console.logBytes(runtimeCode);
+        instance.setSolver(address(magicNumSolver));
+    }
 
+    /// @notice Test the solution for the level.
+    function testSolve2() public checkSolvedByPlayer{
+        address magicNumSolver = address(new MagicNumSolver());
+
+        uint256 size;
+        bytes memory runtimeCode = magicNumSolver.code;
+        assembly {
+            size := extcodesize(magicNumSolver)
+        }
+        console.logUint(size);
+        console.logBytes(hex"6008600b5f3960085ff3fe602a5f5260205ff3");
+        console.logBytes(type(MagicNumSolver).creationCode);
+        console.logBytes(runtimeCode);
+        instance.setSolver(address(magicNumSolver));
     }
 }
