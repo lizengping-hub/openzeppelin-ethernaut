@@ -8,6 +8,7 @@ import {Recovery, SimpleToken} from "src/levels/Recovery.sol";
 import {RecoveryFactory} from "src/levels/RecoveryFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {Lib_RLPReader} from "../../src/helpers/lib/rlp/Lib_RLPReader.sol";
 
 contract TestRecovery is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,18 @@ contract TestRecovery is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        /*
+         * address(
+            uint160(uint256(keccak256(abi.encodePacked(uint8(0xd6), uint8(0x94), address(instance), uint8(0x01)))))
+        );
+         */
+        //0xd6 = 214 = 192 + 22
+        //0x94 = 148 = 128 + 20
+        bytes memory rlp = abi.encodePacked(uint8(0xd6), uint8(0x94), address(instance), uint8(0x01));
+        console.logBytes(rlp);
+        console.logUint(rlp.length);
+        SimpleToken token = SimpleToken(payable(vm.computeCreateAddress(address(instance), 1)));
+        token.destroy(payable(address(player)));
 
     }
 }
