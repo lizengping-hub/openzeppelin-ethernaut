@@ -8,6 +8,7 @@ import {DexTwo, SwappableTokenTwo} from "src/levels/DexTwo.sol";
 import {DexTwoFactory} from "src/levels/DexTwoFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {ERC20Mock} from "openzeppelin-contracts-08/mocks/ERC20Mock.sol";
 
 contract TestDexTwo is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,10 @@ contract TestDexTwo is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        ERC20Mock mockToken = new ERC20Mock("Mock Token","MT", player, 1000);
+        mockToken.approve(address(instance), 3);
+        mockToken.mint(address(instance), 1);
+        instance.swap(address(mockToken), instance.token2(), 1);
+        instance.swap(address(mockToken), instance.token1(), 2);
     }
 }
