@@ -11,6 +11,7 @@ import {Ethernaut} from "src/Ethernaut.sol";
 interface Engine {
     function initialize() external;
     function upgradeToAndCall(address, bytes memory) external payable;
+    function upgrader() external returns(address);
 }
 
 contract TestMotorbike is Test, Utils {
@@ -69,7 +70,12 @@ contract TestMotorbike is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        Engine(instance).initialize(); // not revert
+        address engine = address(
+            uint160(uint256(vm.load(instance, hex"360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc")))
+        );
+        console.logUint(engine.code.length);
+        // Engine(instance).upgrader(); // will revert
     }
 
     function done() public {
