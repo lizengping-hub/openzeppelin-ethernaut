@@ -4,10 +4,11 @@ pragma solidity ^0.8.0;
 import "forge-std/Test.sol";
 import {Utils} from "test/utils/Utils.sol";
 
-import {DoubleEntryPoint, Forta} from "src/levels/DoubleEntryPoint.sol";
+import {DoubleEntryPoint, Forta, IForta} from "src/levels/DoubleEntryPoint.sol";
 import {DoubleEntryPointFactory} from "src/levels/DoubleEntryPointFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {DoubleEntryPointDetectionBot} from "../../src/attacks/DoubleEntryPointDetectionBot.sol";
 
 contract TestDoubleEntryPoint is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,8 @@ contract TestDoubleEntryPoint is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        IForta forta = IForta(instance.forta());
+        DoubleEntryPointDetectionBot bot = new DoubleEntryPointDetectionBot();
+        forta.setDetectionBot(address(bot));
     }
 }
