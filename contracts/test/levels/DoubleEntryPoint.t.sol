@@ -60,7 +60,7 @@ contract TestDoubleEntryPoint is Test, Utils {
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
         IForta forta = IForta(instance.forta());
-        DoubleEntryPointDetectionBot bot = new DoubleEntryPointDetectionBot();
+        DoubleEntryPointDetectionBot bot = new DoubleEntryPointDetectionBot(address(forta));
         forta.setDetectionBot(address(bot));
     }
 }
