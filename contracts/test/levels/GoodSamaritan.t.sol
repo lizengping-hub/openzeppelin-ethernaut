@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "../../src/attacks/GoodSamaritanAttack.sol";
 import "forge-std/Test.sol";
-import {Utils} from "test/utils/Utils.sol";
 
-import {GoodSamaritan} from "src/levels/GoodSamaritan.sol";
-import {GoodSamaritanFactory} from "src/levels/GoodSamaritanFactory.sol";
-import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {GoodSamaritanFactory} from "src/levels/GoodSamaritanFactory.sol";
+import {GoodSamaritan} from "src/levels/GoodSamaritan.sol";
+import {Level} from "src/levels/base/Level.sol";
+import {Utils} from "test/utils/Utils.sol";
 
 contract TestGoodSamaritan is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +59,7 @@ contract TestGoodSamaritan is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        GoodSamaritanAttack a = new GoodSamaritanAttack(address(instance));
+        a.attack();
     }
 }
