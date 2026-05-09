@@ -8,6 +8,8 @@ import {GatekeeperThree} from "src/levels/GatekeeperThree.sol";
 import {GatekeeperThreeFactory} from "src/levels/GatekeeperThreeFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {GatekeeperThreeAttack} from "../../src/attacks/GatekeeperThreeAttack.sol";
+import {Address} from "openzeppelin-contracts-08/utils/Address.sol";
 
 contract TestGatekeeperThree is Test, Utils {
     Ethernaut ethernaut;
@@ -58,6 +60,8 @@ contract TestGatekeeperThree is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        Address.sendValue(payable(address(instance)), 0.002 ether);
+        GatekeeperThreeAttack a = new GatekeeperThreeAttack(payable(address(instance)));
+        a.attack();
     }
 }
