@@ -82,6 +82,7 @@ contract Pool is ReentrancyGuard {
         uint256 _depositedValue = depositedPDT[msg.sender];
         if (_depositedValue > 0) {
             depositedPDT[msg.sender] = 0;
+//            PoolToken(wrappedToken).burn(msg.sender, _depositedValue);
             PoolToken(depositToken).transfer(msg.sender, _depositedValue);
         }
 
@@ -89,6 +90,7 @@ contract Pool is ReentrancyGuard {
         _depositedValue = depositedEther[msg.sender];
         if (_depositedValue > 0) {
             depositedEther[msg.sender] = 0;
+//            PoolToken(wrappedToken).burn(msg.sender, _depositedValue);
             payable(msg.sender).call{value: _depositedValue}("");
         }
 

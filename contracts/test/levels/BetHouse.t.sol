@@ -8,6 +8,7 @@ import {BetHouse, Pool, PoolToken} from "src/levels/BetHouse.sol";
 import {BetHouseFactory} from "src/levels/BetHouseFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {BetHouseAttack} from "../../src/attacks/BetHouseAttack.sol";
 
 contract TestBetHouse is Test, Utils {
     Ethernaut ethernaut;
@@ -59,6 +60,13 @@ contract TestBetHouse is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+        BetHouseAttack attacker = new BetHouseAttack(instance, player);
 
+
+        Pool pool = Pool(instance.pool());
+        PoolToken depositToken = PoolToken(pool.depositToken());
+        depositToken.transfer(address(attacker), 5);
+
+        attacker.attack{value: 0.001 ether}();
     }
 }
