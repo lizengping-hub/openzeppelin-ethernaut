@@ -96,5 +96,20 @@ contract TestImpersonatorTwo is Test, Utils {
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
 
+        // Signatures generated with ImpersonatorTwo.py script
+        bytes memory setAdminSig = abi.encodePacked(
+            hex"e5648161e95dbf2bfc687b72b745269fa906031e2108118050aba59524a23c40", // r
+            hex"701d59ccb1c72824452441d95444aa250ef592082f0f81957de7c9a7b5c14553", // s
+            uint8(28) // v
+        );
+        bytes memory switchLockSig = abi.encodePacked(
+            hex"e5648161e95dbf2bfc687b72b745269fa906031e2108118050aba59524a23c40", // r
+            hex"2a04aa67c7760a7bec982fde4b387e1e62dc26ba69dd74444e68ffe28851375e", // s
+            uint8(28) // v
+        );
+
+        instance.setAdmin(setAdminSig, player);
+        instance.switchLock(switchLockSig);
+        instance.withdraw();
     }
 }
