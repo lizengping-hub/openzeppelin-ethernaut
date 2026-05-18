@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.30;
 
+import "../../src/attacks/UniqueNFTAttack.sol";
 import "forge-std/Test.sol";
-import {Utils} from "test/utils/Utils.sol";
 
-import {UniqueNFT} from "src/levels/UniqueNFT.sol";
-import {UniqueNFTFactory} from "src/levels/UniqueNFTFactory.sol";
-import {Level} from "src/levels/base/Level.sol";
 import {Ethernaut} from "src/Ethernaut.sol";
+import {Level} from "src/levels/base/Level.sol";
+import {UniqueNFTFactory} from "src/levels/UniqueNFTFactory.sol";
+import {UniqueNFT} from "src/levels/UniqueNFT.sol";
+import {Utils} from "test/utils/Utils.sol";
 
 
 contract TestUniqueNFT is Test, Utils {
@@ -69,6 +70,10 @@ contract TestUniqueNFT is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer {
+        UniqueNFTAttack attacker = new UniqueNFTAttack();
 
+        vm.signAndAttachDelegation(address(attacker), playerKey);
+        UniqueNFTAttack(payable(player)).setNFT(instance);
+        UniqueNFTAttack(payable(player)).attack();
     }
 }
