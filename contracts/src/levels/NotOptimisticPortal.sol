@@ -5,8 +5,8 @@ pragma solidity ^0.8.0;
 import { Lib_RLPReader } from "../helpers/lib/rlp/Lib_RLPReader.sol";
 // https://github.com/ethereum-optimism/optimism/blob/@eth-optimism/contracts@0.6.0/packages/contracts/contracts/libraries/trie/Lib_SecureMerkleTrie.sol
 import { Lib_SecureMerkleTrie } from "../helpers/lib/trie/Lib_SecureMerkleTrie.sol";
-import { ReentrancyGuard } from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import { ReentrancyGuard } from "openzeppelin-contracts-v5.4.0/utils/ReentrancyGuard.sol";
+import { ERC20 } from "openzeppelin-contracts-v5.4.0/token/ERC20/ERC20.sol";
 
 interface IMessageReceiver {
     function onMessageReceived(bytes memory messageData) external;
