@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import {Utils} from "test/utils/Utils.sol";
-
+import {ShopAttack} from "../../src/attacks/ShopAttack.sol";
 import {Shop} from "src/levels/Shop.sol";
 import {ShopFactory} from "src/levels/ShopFactory.sol";
 import {Level} from "src/levels/base/Level.sol";
@@ -58,5 +58,7 @@ contract TestShop is Test, Utils {
 
     /// @notice Test the solution for the level.
     function testSolve() public checkSolvedByPlayer{
+            ShopAttack attack = new ShopAttack();
+            attack.attack(address(instance));
     }
 }
